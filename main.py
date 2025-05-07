@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from routers import events
 from utils.db import engine  # Import the engine from db.py
@@ -17,3 +18,8 @@ def read_root():
 
 # Include the events router
 app.include_router(events.router)
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.getenv("app_port", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
