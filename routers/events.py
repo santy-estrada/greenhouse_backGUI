@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from utils.db import get_session
 from services.event_service import update_plant_event, update_device_event
+from services.log_service import insert_new_log_plant, insert_new_log_iotDev
 from models.plantModels import PlantEventUpdate
 from models.iotDevModels import IoTDevPump
-from models.schema import PlantEvent, IotDevEvent
 from fastapi import HTTPException, status
 from utils.request_validation import check_plant_event_exists, check_iot_dev_event_exists
 from utils.request_validation import validate_not_none, validate_positive_integer, validate_float, validate_range, validate_boolean
@@ -21,6 +21,7 @@ def update_luminosity_event(data: PlantEventUpdate, session: Session = Depends(g
         check_plant_event_exists(session, data.plant_id)
 
         update_plant_event(session, "luminosity_event", data.luminosity_event, data.plant_id)
+        insert_new_log_plant(session, data.plant_id)
         return {"message": "Luminosity event updated", "plant_id": data.plant_id, "luminosity_event": data.luminosity_event}
     except HTTPException as e:
         raise e
@@ -41,6 +42,7 @@ def update_humidity_event(data: PlantEventUpdate, session: Session = Depends(get
     check_plant_event_exists(session, data.plant_id)
     
     update_plant_event(session, "humidity_event", data.humidity_event, data.plant_id)
+    insert_new_log_plant(session, data.plant_id)
     return {"message": "Humidity event updated", "plant_id": data.plant_id, "humidity_event": data.humidity_event}
 
 @router.put("/plant/valve")
@@ -52,6 +54,7 @@ def update_valve_event(data: PlantEventUpdate, session: Session = Depends(get_se
     check_plant_event_exists(session, data.plant_id)
     
     update_plant_event(session, "valve_event", data.valve_event, data.plant_id)
+    insert_new_log_plant(session, data.plant_id)
     return {"message": "Valve event updated", "plant_id": data.plant_id, "valve_event": data.valve_event}
 
 @router.put("/plant/led")
@@ -63,6 +66,7 @@ def update_led_event(data: PlantEventUpdate, session: Session = Depends(get_sess
     check_plant_event_exists(session, data.plant_id)
 
     update_plant_event(session, "led_intensity_event", data.led_intensity_event, data.plant_id)
+    insert_new_log_plant(session, data.plant_id)
     return {"message": "LED intensity event updated", "plant_id": data.plant_id, "led_intensity_event": data.led_intensity_event}
 
 @router.put("/device/pump")
@@ -74,4 +78,5 @@ def update_pump_event(data: IoTDevPump, session: Session = Depends(get_session))
     check_iot_dev_event_exists(session, data.iot_dev_id)
     
     update_device_event(session, data.pump_event, data.iot_dev_id)
+    insert_new_log_iotDev(session, data.iot_dev_id)
     return {"message": "Pump event updated", "iot_dev_id": data.iot_dev_id, "pump_event": data.pump_event}
