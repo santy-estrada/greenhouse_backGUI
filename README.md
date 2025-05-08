@@ -82,8 +82,10 @@ Remember that:
 ### 2. Run the Application
 Use the following command to start the FastAPI application:
 ```bash
-uvicorn main:app --reload --port 8000
+uvicorn main:app --reload  
  ```
+
+Or simply run main.py and it will automatically run on `app_port` from the `.env`
 ### 3. Access the API
 Once the application is running, you can access the API documentation at:
 
