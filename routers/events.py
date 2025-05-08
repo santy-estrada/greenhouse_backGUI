@@ -69,6 +69,18 @@ def update_led_event(data: PlantEventUpdate, session: Session = Depends(get_sess
     insert_new_log_plant(session, data.plant_id)
     return {"message": "LED intensity event updated", "plant_id": data.plant_id, "led_intensity_event": data.led_intensity_event}
 
+@router.put("/plant/mode")
+def update_mode_event(data: PlantEventUpdate, session: Session = Depends(get_session)):
+    validate_not_none(data.mode, "Mode event cannot be None.")
+    validate_not_none(data.plant_id, "Plant ID cannot be None.")
+    validate_positive_integer(data.plant_id, "Plant ID must be a positive integer.")
+    validate_range(data.mode, 1, 4, "Mode event must be an integer between 1 and 4.")
+    check_plant_event_exists(session, data.plant_id)
+
+    update_plant_event(session, "mode", data.mode, data.plant_id)
+    insert_new_log_plant(session, data.plant_id)
+    return {"message": "Mode event updated", "plant_id": data.plant_id, "mode": data.mode}
+
 @router.put("/device/pump")
 def update_pump_event(data: IoTDevPump, session: Session = Depends(get_session)):
     validate_not_none(data.pump_event, "Pump event cannot be None.")

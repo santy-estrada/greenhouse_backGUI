@@ -134,6 +134,14 @@ greenhouse_backGUI_v1/
 ├── Procfile               # Configuration for deployment on Railway
 └── README.md              # Project documentation
 ```
+
+## Modes
+| Mode | Description                                                                 |
+|------|-----------------------------------------------------------------------------|
+| 1    | Sets the microcontroller to follow the `valve_event` and `led_intensity_event` variables. |
+| 2    | Sets the microcontroller to follow the `valve_event` and `luminosity_event` variables.    |
+| 3    | Sets the microcontroller to follow the `humidity_event` and `led_intensity_event` variables. |
+| 4    | Sets the microcontroller to follow the `luminosity_event` and `humidity_event` variables.  |
 ## Endpoints
 
 ### Plant Events

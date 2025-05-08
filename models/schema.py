@@ -28,7 +28,9 @@ class Log(Base):
     valve_event = Column(Boolean, nullable=False)
     pump_event = Column(Boolean, nullable=False)
     led_intensity_event = Column(Integer, nullable=False)
-
+    
+    mode_event = Column(Integer, nullable=False, default=0)
+    mode_state = Column(Integer, nullable=False, default=0)
 
 class PlantState(Base):
     __tablename__ = "PlantState"
@@ -41,6 +43,8 @@ class PlantState(Base):
 
     valve_state = Column(Boolean, nullable=False)
     led_intensity_state = Column(Integer, nullable=False)
+    
+    mode = Column(Integer, nullable=False, default=0)
 
     plants = relationship("Plant", back_populates="plant_state", primaryjoin="PlantState.id==Plant.plant_state_id", foreign_keys="[Plant.plant_state_id]")
 
@@ -56,6 +60,8 @@ class PlantEvent(Base):
 
     valve_event = Column(Boolean, nullable=False)
     led_intensity_event = Column(Integer, nullable=False)
+    
+    mode = Column(Integer, nullable=False, default=0)
 
     plants = relationship("Plant",back_populates="plant_event",primaryjoin="PlantEvent.id==Plant.plant_event_id",foreign_keys="[Plant.plant_event_id]")
 

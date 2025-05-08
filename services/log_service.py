@@ -23,7 +23,8 @@ def insert_new_log_plant(session: Session, plant_id: int):
                 PlantState.luminosity_state,
                 PlantState.humidity_state,
                 PlantState.valve_state,
-                PlantState.led_intensity_state
+                PlantState.led_intensity_state,
+                PlantState.mode
             ).where(PlantState.id == session.execute(
                 select(Plant.plant_state_id).where(Plant.id == plant_id).limit(1)
             ).scalar_one())
@@ -37,7 +38,8 @@ def insert_new_log_plant(session: Session, plant_id: int):
                 PlantEvent.luminosity_event,
                 PlantEvent.humidity_event,
                 PlantEvent.valve_event,
-                PlantEvent.led_intensity_event
+                PlantEvent.led_intensity_event, 
+                PlantEvent.mode
             ).where(PlantEvent.id == session.execute(
                 select(Plant.plant_event_id).where(Plant.id == plant_id).limit(1)
             ).scalar_one())
@@ -79,7 +81,9 @@ def insert_new_log_plant(session: Session, plant_id: int):
             led_intensity_event=plant_event.led_intensity_event,
             pump_state=iot_dev_state,
             pump_event=iot_dev_event,
-            plant_id=plant_id
+            plant_id=plant_id,
+            mode_event=plant_event.mode,
+            mode_state=plant_state.mode
         )
 
         session.add(new_log)
@@ -111,7 +115,8 @@ def insert_new_log_iotDev(session: Session, iot_dev_id: int = None, plant_id: in
                 PlantState.luminosity_state,
                 PlantState.humidity_state,
                 PlantState.valve_state,
-                PlantState.led_intensity_state
+                PlantState.led_intensity_state,
+                PlantState.mode
             ).where(PlantState.id == session.execute(
                 select(Plant.plant_state_id).where(Plant.id == plant_id).limit(1)
             ).scalar_one())
@@ -125,7 +130,8 @@ def insert_new_log_iotDev(session: Session, iot_dev_id: int = None, plant_id: in
                 PlantEvent.luminosity_event,
                 PlantEvent.humidity_event,
                 PlantEvent.valve_event,
-                PlantEvent.led_intensity_event
+                PlantEvent.led_intensity_event,
+                PlantEvent.mode
             ).where(PlantEvent.id == session.execute(
                 select(Plant.plant_event_id).where(Plant.id == plant_id).limit(1)
             ).scalar_one())
@@ -163,7 +169,9 @@ def insert_new_log_iotDev(session: Session, iot_dev_id: int = None, plant_id: in
             led_intensity_event=plant_event.led_intensity_event,
             pump_state=iot_dev_state,
             pump_event=iot_dev_event,
-            plant_id=plant_id
+            plant_id=plant_id,
+            mode_event=plant_event.mode,
+            mode_state=plant_state.mode
         )
 
         session.add(new_log)
